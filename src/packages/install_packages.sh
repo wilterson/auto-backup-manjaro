@@ -7,10 +7,9 @@ echo "[*] Refreshing pacman keyring..."
 echo "============================================"
 
 # Fix PGP signature issues (common on fresh installs)
+sudo pacman -Sy --noconfirm archlinux-keyring manjaro-keyring
 sudo pacman-key --init
 sudo pacman-key --populate archlinux manjaro
-sudo pacman-key --refresh-keys
-sudo pacman -Sy --noconfirm archlinux-keyring manjaro-keyring
 
 echo ""
 echo "============================================"
