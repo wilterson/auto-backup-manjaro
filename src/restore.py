@@ -144,7 +144,12 @@ def main():
 
     # Step 1: Install packages
     print("\n📦 Installing packages...")
-    subprocess.run(["sh", "src/packages/install_packages.sh"], check=True)
+    result = subprocess.run(["sh", "src/packages/install_packages.sh"])
+    if result.returncode != 0:
+        print("\n⚠️  Package installation had errors. Continuing with restore...")
+        print(
+            "   You can retry packages later with: sh src/packages/install_packages.sh"
+        )
 
     # Step 2: Check for backup on Google Drive
     print("\n" + "=" * 50)

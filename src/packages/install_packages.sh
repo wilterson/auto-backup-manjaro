@@ -3,6 +3,17 @@
 set -e  # Exit on error
 
 echo "============================================"
+echo "[*] Refreshing pacman keyring..."
+echo "============================================"
+
+# Fix PGP signature issues (common on fresh installs)
+sudo pacman-key --init
+sudo pacman-key --populate archlinux manjaro
+sudo pacman-key --refresh-keys
+sudo pacman -Sy --noconfirm archlinux-keyring manjaro-keyring
+
+echo ""
+echo "============================================"
 echo "[*] Configuring system..."
 echo "============================================"
 
@@ -92,14 +103,5 @@ mkdir -p ~/Documents/Projects
 
 echo ""
 echo "============================================"
-echo "[✓] Installation complete!"
+echo "[✓] Package installation complete!"
 echo "============================================"
-
-echo "Restoring Brave Browser Data..."
-python src/restore_brave_data.py
-
-echo "Restoring Cursor IDE Data..."
-python src/restore_cursor_data.py
-
-echo "Restoring Fish Shell Data..."
-python src/restore_fish_data.py
