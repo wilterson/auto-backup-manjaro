@@ -12,7 +12,6 @@ from googleapiclient.http import MediaIoBaseDownload
 from modules.brave import restore as restore_brave
 from modules.cursor import restore as restore_cursor
 from modules.fish import restore as restore_fish
-from modules.github import setup_ssh
 
 load_dotenv()
 
@@ -176,12 +175,6 @@ def main():
 
     # Restore Cursor data
     restore_cursor.main()
-
-    # Step 4: Setup GitHub SSH
-    print("\n" + "=" * 50)
-    print("🔐 Setting up GitHub SSH...")
-    print("=" * 50)
-    setup_ssh.main()
 
     print("\n" + "=" * 50)
     print("✨ Restore complete!")
