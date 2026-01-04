@@ -1,0 +1,32 @@
+# Environment and credentials
+.env
+credentials.json
+token.json
+google-token.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+.venv/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+backup.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+google-creds.json
