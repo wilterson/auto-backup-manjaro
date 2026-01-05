@@ -199,6 +199,56 @@ class GoogleDriveBackup:
 
         return uploaded, failed
 
+    def list_backup_folders(self, parent_id: str = None) -> list[dict]:
+        """List all backup folders (matching backup_* pattern) sorted by name descending."""
+        query = "name contains 'backup_' and mimeType='application/vnd.google-apps.folder' and trashed=false"
+        if parent_id:
+            query += f" and '{parent_id}' in parents"
+
+        results = (
+            self.service.files()
+            .list(
+                q=query,
+                spaces="drive",
+                fields="files(id, name, createdTime)",
+                orderBy="name desc",
+            )
+            .execute()
+        )
+
+        return results.get("files", [])
+
+    def delete_folder(self, folder_id: str, folder_name: str = ""):
+        """Delete a folder from Google Drive (moves to trash)."""
+        try:
+            self.service.files().delete(fileId=folder_id).execute()
+            print(f"🗑️  Deleted old backup: {folder_name}")
+            return True
+        except HttpError as error:
+            print(f"❌ Error deleting {folder_name}: {error}")
+            return False
+
+    def cleanup_old_backups(self, parent_id: str = None, keep_count: int = 3):
+        """Remove old backups, keeping only the most recent ones."""
+        backups = self.list_backup_folders(parent_id)
+
+        if len(backups) <= keep_count:
+            print(
+                f"📦 {len(backups)} backup(s) found, no cleanup needed (keeping {keep_count})"
+            )
+            return
+
+        # Backups are sorted by name descending (newest first due to timestamp format)
+        backups_to_delete = backups[keep_count:]
+
+        print(f"\n🧹 Cleaning up old backups (keeping {keep_count} most recent)...")
+        deleted_count = 0
+        for backup in backups_to_delete:
+            if self.delete_folder(backup["id"], backup["name"]):
+                deleted_count += 1
+
+        print(f"✅ Removed {deleted_count} old backup(s)")
+
 
 def main():
     """Main entry point."""
@@ -218,6 +268,9 @@ def main():
     # Perform backup
     drive_folder_id = GOOGLE_DRIVE_FOLDER_ID if GOOGLE_DRIVE_FOLDER_ID else None
     backup.backup_folder(BACKUP_FOLDER_PATH, drive_folder_id)
+
+    # Cleanup old backups, keep only 3 most recent
+    backup.cleanup_old_backups(drive_folder_id, keep_count=3)
 
     print("\n✨ Backup complete!")
 
