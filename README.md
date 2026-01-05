@@ -7,6 +7,7 @@ Backup and restore tools for a fresh Manjaro/Arch Linux install.
 - **Fish Shell** - history and config
 - **Brave Browser** - bookmarks, history
 - **Cursor IDE** - settings, keybindings, snippets, extensions
+- **Konsole Terminal** - config and profiles
 
 ## Setup
 
@@ -62,6 +63,7 @@ This will:
 3. Restore Fish data
 4. Restore Brave bookmarks
 5. Restore Cursor settings
+6. Restore Konsole terminal
 
 ### Package Installer
 
@@ -84,10 +86,13 @@ auto-backup/
 │   │   ├── brave/
 │   │   │   ├── extract.py
 │   │   │   └── restore.py
-│   │   └── cursor/
+│   │   ├── cursor/
+│   │   │   ├── extract.py
+│   │   │   ├── restore.py
+│   │   │   └── command.py
+│   │   └── konsole/
 │   │       ├── extract.py
-│   │       ├── restore.py
-│   │       └── command.py
+│   │       └── restore.py
 │   └── packages/
 │       └── install_packages.sh
 ├── requirements.txt

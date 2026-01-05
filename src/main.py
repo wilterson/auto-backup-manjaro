@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from modules.brave import extract as extract_brave
 from modules.cursor import extract as extract_cursor
 from modules.fish import extract as extract_fish
+from modules.konsole import extract as extract_konsole
 import backup_to_drive
 
 load_dotenv()
@@ -33,6 +34,9 @@ def main():
 
     # Extract Cursor data
     extract_cursor.main()
+
+    # Extract Konsole data
+    extract_konsole.main()
 
     print("Uploading data to Google Drive...")
     backup_to_drive.main()

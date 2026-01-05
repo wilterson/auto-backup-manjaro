@@ -12,6 +12,7 @@ from googleapiclient.http import MediaIoBaseDownload
 from modules.brave import restore as restore_brave
 from modules.cursor import restore as restore_cursor
 from modules.fish import restore as restore_fish
+from modules.konsole import restore as restore_konsole
 
 load_dotenv()
 
@@ -180,6 +181,9 @@ def main():
 
     # Restore Cursor data
     restore_cursor.main()
+
+    # Restore Konsole data
+    restore_konsole.main()
 
     print("\n" + "=" * 50)
     print("✨ Restore complete!")
