@@ -60,22 +60,64 @@ echo "============================================"
 echo "[*] Installing Softwares..."
 echo "============================================"
 
-yay -S --noconfirm --needed \
-    gvim \
-    zip \
-    google-chrome \
-    brave-bin \
-    spotify \
-    visual-studio-code-bin \
-    cursor-bin \
-    docker \
-    docker-compose \
-    kubectl \
-    postman-bin \
-    apidog-bin \
-    ttf-fira-code \
-    flatpak \
+# Remove vim first (conflicts with gvim)
+sudo pacman -Rns --noconfirm vim 2>/dev/null || true
+
+# List of packages to install
+PACKAGES=(
+    gvim
+    zip
+    google-chrome
+    brave-bin
+    spotify
+    visual-studio-code-bin
+    cursor-bin
+    docker
+    docker-compose
+    kubectl
+    postman-bin
+    apidog-bin
+    ttf-fira-code
+    flatpak
     yarn
+)
+
+# Track results
+FAILED=()
+INSTALLED=()
+
+# Install packages one by one
+for pkg in "${PACKAGES[@]}"; do
+    echo ""
+    echo "📦 Installing $pkg..."
+    if yay -S --noconfirm --needed --answerdiff=None --answerclean=None "$pkg" 2>/dev/null; then
+        INSTALLED+=("$pkg")
+        echo "  ✅ $pkg installed"
+    else
+        FAILED+=("$pkg")
+        echo "  ❌ $pkg failed"
+    fi
+done
+
+# Show summary
+echo ""
+echo "============================================"
+echo "📊 Software Installation Summary"
+echo "============================================"
+echo "  ✅ Installed: ${#INSTALLED[@]}"
+echo "  ❌ Failed: ${#FAILED[@]}"
+
+if [ ${#FAILED[@]} -gt 0 ]; then
+    echo ""
+    echo "  Failed packages:"
+    for pkg in "${FAILED[@]}"; do
+        echo "    - $pkg"
+    done
+    echo ""
+    echo "  Retry failed with:"
+    echo "    yay -S --noconfirm ${FAILED[*]}"
+fi
+echo "============================================"
 
 echo ""
 echo "============================================"
