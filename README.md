@@ -63,6 +63,12 @@ This will:
 4. Restore Brave bookmarks
 5. Restore Cursor settings
 
+### Package Installer
+
+Interactive menu to select which steps to run:
+
+![Package Installer](docs/Screenshot_20260105_103540.png)
+
 ## Project Structure
 
 ```
